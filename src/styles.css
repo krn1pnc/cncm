@@ -1,0 +1,53 @@
+html {
+  font-family: sans-serif;
+}
+
+.main-inner {
+  margin: 0 auto;
+  width: 900px;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.btn {
+  flex-grow: 1;
+}
+
+.btn label {
+  display: flex;
+  justify-content: center;
+  padding: 5px 10px;
+  color: white;
+  background-color: #3399ff;
+  border-radius: 5px;
+  user-select: none;
+}
+
+.btn label:hover {
+  background-color: #0080ff;
+}
+
+.preview-list {
+  padding-left: 0;
+}
+
+.preview-list-item {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  border-top: 1px solid #ccc;
+}
+
+.preview-list-item a {
+  padding-left: 10px;
+  line-height: 32px;
+  order: 2;
+}
+
+.preview-list img {
+  height: 64px;
+  order: 1;
+}
