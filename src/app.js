@@ -17,7 +17,7 @@ input.addEventListener("change", async () => {
     let filenameNoExt = file.name.replace(".ncm", "");
 
     let link = document.createElement("a");
-    link.setAttribute("download", filenameNoExt);
+    link.setAttribute("download", filenameNoExt + `.${ncmFile.format}`);
     link.textContent = filenameNoExt;
     link.href = URL.createObjectURL(new Blob([ncmFile.music]));
 
