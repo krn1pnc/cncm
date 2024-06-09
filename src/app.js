@@ -4,7 +4,10 @@ const input = document.querySelector("input");
 const downloadAll = document.querySelector("#download-all");
 const previewList = document.querySelector(".preview .preview-list");
 
+let isConverting = false;
+
 input.addEventListener("change", async () => {
+  isConverting = true;
   for (const file of input.files) {
     let ncmFile = await file
       .arrayBuffer()
@@ -29,9 +32,14 @@ input.addEventListener("change", async () => {
 
     previewList.append(previewListItem);
   }
+  isConverting = false;
 });
 
 downloadAll.addEventListener("click", () => {
+  if (isConverting) {
+    alert("尚未转换完成");
+    return;
+  }
   for (const previewListItem of previewList.childNodes) {
     previewListItem.firstChild.click();
   }
