@@ -1,45 +1,43 @@
-import { decrypt } from "./core";
-
 const input = document.querySelector("input");
 const downloadAll = document.querySelector("#download-all");
 const previewList = document.querySelector(".preview .preview-list");
-
-let isConverting = false;
+const workerURL = new URL("worker.ts", import.meta.url);
 
 input.addEventListener("change", async () => {
-  isConverting = true;
   for (const file of input.files) {
-    let ncmFile = await file
-      .arrayBuffer()
-      .then((buffer) => new Uint8Array(buffer))
-      .then(decrypt);
+    let filenameNoExt = file.name.replace(".ncm", "");
 
     let previewListItem = document.createElement("li");
     previewListItem.className = "preview-list-item";
-
-    let filenameNoExt = file.name.replace(".ncm", "");
-
-    let link = document.createElement("a");
-    link.setAttribute("download", filenameNoExt + `.${ncmFile.format}`);
-    link.textContent = filenameNoExt;
-    link.href = URL.createObjectURL(new Blob([ncmFile.music]));
-
-    let image = document.createElement("img");
-    image.src = URL.createObjectURL(new Blob([ncmFile.cover]));
-
-    previewListItem.append(link);
-    previewListItem.append(image);
-
     previewList.append(previewListItem);
+
+    let loader = document.createElement("div");
+    loader.className = "loader";
+    previewListItem.appendChild(loader);
+
+    previewListItem.style = "justify-content: center;";
+
+    let worker = new Worker(workerURL);
+    worker.postMessage(file);
+    worker.onmessage = (e) => {
+      previewListItem.removeChild(loader);
+
+      let image = document.createElement("img");
+      image.src = e.data.cover;
+      previewListItem.appendChild(image);
+
+      let link = document.createElement("a");
+      link.setAttribute("download", filenameNoExt + `.${e.data.format}`);
+      link.textContent = filenameNoExt;
+      link.href = e.data.music;
+      previewListItem.appendChild(link);
+
+      previewListItem.style = "justify-content: space-between;";
+    };
   }
-  isConverting = false;
 });
 
 downloadAll.addEventListener("click", () => {
-  if (isConverting) {
-    alert("尚未转换完成");
-    return;
-  }
   for (const previewListItem of previewList.childNodes) {
     previewListItem.firstChild.click();
   }
