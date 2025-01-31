@@ -23,13 +23,13 @@ input.addEventListener("change", async () => {
       previewListItem.removeChild(loader);
 
       let image = document.createElement("img");
-      image.src = e.data.cover;
+      image.src = URL.createObjectURL(new Blob([e.data.cover]));
       previewListItem.appendChild(image);
 
       let link = document.createElement("a");
       link.setAttribute("download", filenameNoExt + `.${e.data.format}`);
       link.textContent = filenameNoExt;
-      link.href = e.data.music;
+      link.href = URL.createObjectURL(new Blob([e.data.music]));
       previewListItem.appendChild(link);
 
       previewListItem.style = "justify-content: space-between;";

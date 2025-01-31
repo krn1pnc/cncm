@@ -115,11 +115,14 @@ onmessage = async (e) => {
   let musicCipher = f.read();
   let music = rc4Crypto.decrypt(musicCipher);
 
-  postMessage({
-    format: meta.format,
-    cover: URL.createObjectURL(new Blob([cover])),
-    music: URL.createObjectURL(new Blob([music])),
-  });
+  postMessage(
+    {
+      format: meta.format,
+      cover: cover,
+      music: music,
+    },
+    [cover.buffer, music.buffer],
+  );
 
   close();
 };
