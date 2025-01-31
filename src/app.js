@@ -39,6 +39,6 @@ input.addEventListener("change", async () => {
 
 downloadAll.addEventListener("click", () => {
   for (const previewListItem of previewList.childNodes) {
-    previewListItem.firstChild.click();
+    previewListItem.querySelector("a").click();
   }
 });
