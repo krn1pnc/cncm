@@ -1,7 +1,9 @@
 const input = document.querySelector("input");
 const downloadAll = document.querySelector("#download-all");
 const previewList = document.querySelector(".preview .preview-list");
-const workerURL = new URL("worker.ts", import.meta.url);
+const workerURL = await fetch(new URL("worker.ts", import.meta.url))
+  .then((r) => r.blob())
+  .then((b) => URL.createObjectURL(b));
 
 input.addEventListener("change", async () => {
   for (const file of input.files) {
