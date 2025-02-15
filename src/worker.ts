@@ -81,7 +81,9 @@ const rc4KeyCrypto = new NcmAes(enc.encode("hzHRAmso5kInbaxW"));
 const metaCrypto = new NcmAes(enc.encode("#14ljk_!\\]&0U<'("));
 
 onmessage = async (e) => {
-  let f = new StreamReader(await e.data.bytes());
+  let f = new StreamReader(
+    await e.data.arrayBuffer().then((b: ArrayBuffer) => new Uint8Array(b)),
+  );
 
   let magic = f.read(8);
   if (dec.decode(magic) != "CTENFDAM") {
